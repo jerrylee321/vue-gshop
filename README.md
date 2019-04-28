@@ -7,8 +7,21 @@ api/position/31.38098,121.50146:1 Failed to load resource: the server responded 
 
 
 2,Uncaught (in promise) ReferenceError: state is not defined
-解决: 
+解决: state 没传, 数据拿不到
 
 
 3,请求异常: Request failed with status code 504
 问题在于服务器没启动,启动就可以了.
+
+
+4,请求异常: Request failed with status code 404
+解决: 路径错了, 修改匹配就可以了
+
+5,vue.esm.js?efeb:578 [Vue warn]: Error in render: "TypeError: Cannot read property '0' of undefined"
+问题在于3 层表达式(a.b.c)
+因为初始值为空的时候,就会报错
+解决: v-if 
+<!--
+     初始显示问题: 对初始值为{}/[], 进行3层表达式读取时报错   can not read property xxx of undefined
+     解决:　v-if
+    -->

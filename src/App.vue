@@ -7,12 +7,17 @@
 
 <script>
 import Footer from './components/Footer/Footer.vue'
+
   export default {
     name: 'App',
    async mounted(){
       this.$store.dispatch('getAddress')
      this.$store.dispatch('getCategories')
      this.$store.dispatch('getShops')
+     this.$store.dispatch('getUser')
+     /*this.$store.dispatch('getGoods')
+     this.$store.dispatch('getRatings')
+     this.$store.dispatch('getInfo')*/
     },
     components: {
      Footer

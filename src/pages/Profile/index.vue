@@ -1,18 +1,18 @@
 <template>
   <section class="profile">
     <Header title="个人"/>
-    <section class="profile-number" @click="goto('/login')">
+    <section class="profile-number" @click="$router.push(user._id ? '/userinfo':'/login')">
       <a href="javascript:" class="profile-link">
         <div class="profile_image">
           <i class="iconfont icon-person"></i>
         </div>
-        <div class="user-info">
-          <p class="user-info-top">登录/注册</p>
-          <p>
+        <div class="user-info" v-if="!user.phone">
+          <p class="user-info-top">{{user.name ? user.name:'登录/注册'}}</p>
+          <p v-if="!user.name">
                 <span class="user-icon">
                   <i class="iconfont icon-shouji icon-mobile"></i>
                 </span>
-            <span class="icon-mobile-number">暂无绑定手机号</span>
+            <span class="icon-mobile-number">{{user.phone ? user.phone:'暂无绑定手机号'}}</span>
           </p>
         </div>
         <span class="arrow">
@@ -88,16 +88,33 @@
         </div>
       </a>
     </section>
+    <section class="profile_my_order border-1px">
+      <mt-button type="danger" style="width:100%" @click="logout" v-if="user._id">退出登录</mt-button>
+    </section>
   </section>
 </template>
 
 <script>
-
+  import {MessageBox} from 'mint-ui';
+  import {mapState} from 'vuex'
+  import MtButton from "../../../node_modules/mint-ui/packages/button/src/button.vue";
 
   export default {
+    components: {MtButton},
+    computed: {
+      ...mapState(['user'])
+    },
     methods: {
       goto(path) {
         this.$router.push(path)
+      },
+      logout() {
+        MessageBox.confirm('确定退出登录吗?').then(action => {
+          console.log('确定')
+          this.$store.dispatch('Logout')
+        }, action => {
+          console.log('取消')
+        });
       }
     }
   }
@@ -107,7 +124,7 @@
   @import "../../assets/mixins.styl"
   .profile //我的
     width 100%
-    overflow:hidden
+    overflow: hidden
     .profile-number
       margin-top 45.5px
       .profile-link
@@ -204,12 +221,12 @@
         display flex
         align-items center
         padding-left 15px
-        >span
+        > span
           display flex
           align-items center
           width 20px
           height 20px
-          >.iconfont
+          > .iconfont
             margin-left -10px
             font-size 30px
           .icon-order-s
